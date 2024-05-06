@@ -5,6 +5,8 @@ import Login from "./pages/login/Login.jsx";
 import SignUp from "./pages/signup/SignUp.jsx";
 import {Toaster} from "react-hot-toast";
 import {useAuthContext} from "./context/AuthContext.jsx";
+import {useEffect} from "react";
+import useConversationKeeper from "./hooks/useConversationKeeper.js";
 
 function App() {
   const { authUser } = useAuthContext();
@@ -17,6 +19,7 @@ function App() {
             <Route path={'/signup'} element={authUser ? <Navigate to={'/'}/> : <SignUp/>}/>
         </Routes>
         <Toaster/>
+
       </div>
   )
 }

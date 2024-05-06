@@ -9,11 +9,7 @@ export const sendMessage = async (req, res) => {
         const { id: receiverId } = req.params;
         const senderId = req.user._id;
 
-        let conversation = await Conversation.findOne({
-            participants: {
-                $all: [senderId, receiverId]
-            },
-        })
+        let conversation = await Conversation.findById(receiverId)
 
         if(!conversation) {
             conversation = await Conversation.create({
@@ -38,12 +34,14 @@ export const sendMessage = async (req, res) => {
         if (receiverSocketId) {
             // io.to(<socket_id>).emit() used to send events to specific client
             io.to(receiverSocketId).emit("newMessage", newMessage);
+        } else {
+            console.log('не успешно ' + receiverSocketId)
         }
 
         res.status(201).json(newMessage);
     } catch (error) {
         res.status(500).json({error: 'Internal server error'})
-        console.log('error in sendMessage controller')
+        console.log(error + ' error in sendMessage controller')
     }
 }
 
@@ -53,11 +51,7 @@ export const getMessages = async (req, res) => {
         const {id: userToChatId} = req.params;
         const senderId = req.user._id;
 
-        const conversation = await Conversation.findOne({
-            participants: {
-                $all: [senderId, userToChatId]
-            },
-        }).populate('messages');
+        const conversation = await Conversation.findById(userToChatId).populate('messages');
 
         if(!conversation) return res.status(200).json([]);
 

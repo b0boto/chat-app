@@ -2,6 +2,8 @@ import React from 'react';
 import SearchInput from "./SearchInput.jsx";
 import Conversations from "./Conversations.jsx";
 import LogoutButton from "./LogoutButton.jsx";
+import SideBarFooter from "./SideBarFooter.jsx";
+import CreateGroupModal from "./CreateGroupModal.jsx";
 
 const SideBar = () => {
     return (
@@ -9,7 +11,8 @@ const SideBar = () => {
             <SearchInput/>
             <div className="divider px-3"></div>
             <Conversations/>
-            <LogoutButton/>
+            <CreateGroupModal/>
+            <SideBarFooter/>
         </div>
     );
 };
