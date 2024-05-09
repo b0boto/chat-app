@@ -10,7 +10,6 @@ const useGetConversations = () => {
         setLoading(true);
         const data = await getConversationsAPI('useGetConversations');
         setConversations(data || []);
-        console.log('gsdfg getConversations()')
         setLoading(false);
     }
 

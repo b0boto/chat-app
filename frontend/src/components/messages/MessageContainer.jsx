@@ -3,26 +3,16 @@ import Messages from "./Messages.jsx";
 import MessageInput from "./MessageInput.jsx";
 import { BiSolidMessage } from "react-icons/bi";
 import useConversation from "../../store/useConversation.js";
-import DeleteUserModal from "../Modals/deleteUserModal.jsx";
+import UserProfileModal from "../Modals/UserProfileModal.jsx";
 import {useAuthContext} from "../../context/AuthContext.jsx";
+import AddUserModal from "../Modals/AddUserModal.jsx";
+import UserList from "../Chat/UserList.jsx";
+import useGetConversationUsers from "../../hooks/useGetConversationUsers.js";
+
 
 const MessageContainer = () => {
     const {selectedConversation, setSelectedConversation} = useConversation();
-    const {users} = useConversation();
-    const newMap = new Map(users);
-    const emptyUsersId = selectedConversation?.participants.filter((id) => users.get(id)) // получаем ид пользователей которых нету в глобал стейте
-    const newUsers = [];
-
-    const {authUser} = useAuthContext();
-
-    const [selectedUser, setSelectedUser] = useState('');
-    const [modal, setModal] = useState(false);
-
-    if(emptyUsersId) {
-        for(let id of emptyUsersId) {
-            newUsers.push(newMap.get(id));
-        }
-    }
+    useGetConversationUsers();
 
     useEffect(() => {
         return () => setSelectedConversation(null)
@@ -38,32 +28,16 @@ const MessageContainer = () => {
                             <span className={'label-text'}>To: </span>
                             <span className={'label-text font-bold'}>{selectedConversation.conversationName}</span>
                         </div>
-                        <div className="dropdown dropdown-end">
-                            <div tabIndex={0} role="button" className="btn m-1">Участники</div>
-                            <ul tabIndex={0}
-                                className="dropdown-content text-center z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                { newUsers.map((user) => (
-                                    <li
-                                        className={'p-2 hover:bg-accent-content/50 cursor-pointer'}
-                                        key={user._id}
-                                        onClick={() => {
-                                            if(authUser._id === selectedConversation.adminUser) {
-                                                setSelectedUser(user._id)
-                                                setModal(true);
-                                            }
-                                        }
-                                        }>
-
-                                        {user.fullName}
-                                        {user._id === selectedConversation.adminUser ? '*' : ''}
-                                    </li>
-                                ))
-                                }
-                                <button className={'hover:bg-green-800 cursor-pointer'}>+</button>
-                            </ul>
-                        </div>
+                        { selectedConversation.type !== 'CHAT' &&
+                            (
+                                <div className="dropdown dropdown-end">
+                                    <div tabIndex={0} role="button" className="btn m-1">Участники</div>
+                                    <UserList/>
+                                </div>
+                            )
+                        }
                     </div>
-                    <DeleteUserModal visible={modal} setVisible={setModal} userId={selectedUser}/>
+
                     <Messages/>
                     <MessageInput/>
                 </div>

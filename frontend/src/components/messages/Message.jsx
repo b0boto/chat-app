@@ -7,7 +7,7 @@ const Message = ({message}) => {
     const {users} = useConversation();
     const isMyMessage = message.senderId === authUser._id;
     const chatClassName = isMyMessage ? 'chat-end' : 'chat-start';
-    const bubbleBgColor = isMyMessage ? 'bg-blue-500' : 'bg-gray-700';
+    const bubbleBgColor = isMyMessage ? 'bg-gray-700' : 'bg-gray-700';
 
     const date = new Date(message.createdAt)
 

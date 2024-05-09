@@ -9,6 +9,8 @@ const useConversation = create((set) => ({
     setUsers: (users) => set({users}),
     conversations: [],
     setConversations: (conversations) => set({conversations}),
+    participants: [],
+    setParticipants: (participants) => set({participants}),
 }))
 
 export default useConversation;

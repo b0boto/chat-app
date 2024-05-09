@@ -1,4 +1,5 @@
 import Conversation from "../models/conversationModel.js";
+import User from "../models/userModel.js";
 
 export const createConversation = async (req, res) => {
     try {
@@ -34,15 +35,19 @@ export const addUserToConversation = async (req, res) => {
     try {
         const {id: userToAdd} = req.params;
         const {conversationId} = req.body;
-
         const conversation = await Conversation.findById(conversationId);
 
-        conversation.participants.push(userToAdd);
-        await conversation.save();
-        res.status(200).json(conversation);
+        if(conversation.participants.indexOf(userToAdd) !== -1)
+            return res.status(301).json({error: 'Данный пользователь уже есть в группе'})
+        else if(userToAdd)
+            conversation.participants.push(userToAdd);
 
+        const user = await User.findById(userToAdd)
+
+        await conversation.save();
+        res.status(200).json(user);
     } catch (error) {
-        console.log('error in addUserToConversation ', e)
+        console.log('error in addUserToConversation ', error)
         res.status(500).json({error: 'Internal server error'})
     }
 }
@@ -62,7 +67,7 @@ export const removeUserFromConversation = async (req, res) => {
         res.status(200).json(conversation);
 
     } catch (error) {
-        console.log('error in addUserToConversation ', e)
+        console.log('error in addUserToConversation ', error)
         res.status(500).json({error: 'Internal server error'})
     }
 }
@@ -79,7 +84,18 @@ export const getConversations = async (req, res) => {
     }
 }
 
+export const getConversationParticipants = async (req, res) => {
+    try {
+        const {id: conversationId} = req.params;
+        const conversation = await Conversation.findById(conversationId);
 
+        const participants = conversation.participants;
+        res.status(200).json(participants);
+    } catch (error) {
+        console.log('error in getConversationParticipants')
+        res.status(500).json({error: 'Internal server error'})
+    }
+}
 
 
 

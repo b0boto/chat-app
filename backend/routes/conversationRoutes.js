@@ -3,7 +3,7 @@ import protectRoute from "../middleware/protectRoute.js";
 import {
     addUserToConversation,
     createConversation,
-    deleteConversation,
+    deleteConversation, getConversationParticipants,
     getConversations, removeUserFromConversation,
 } from "../controllers/conversationController.js";
 
@@ -14,6 +14,8 @@ router.post('/add/:id', protectRoute, addUserToConversation);
 router.post('/delete', protectRoute, deleteConversation);
 router.post('/remove/:id', protectRoute, removeUserFromConversation);
 router.get('/', protectRoute, getConversations);
+router.get('/participants/:id', protectRoute, getConversationParticipants);
+
 
 
 export default router;

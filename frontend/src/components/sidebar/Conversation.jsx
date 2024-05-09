@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import useConversation from "../../store/useConversation.js";
 import {useSocketContext} from "../../context/SocketContext.jsx";
 
@@ -7,6 +7,8 @@ const Conversation = ({conversation}) => {
     const isSelected = selectedConversation?._id === conversation._id;
     const {onlineUsers} = useSocketContext();
     const isOnline = onlineUsers.includes(conversation._id);
+
+
 
     return (
         <div>
@@ -30,6 +32,7 @@ const Conversation = ({conversation}) => {
                                     :  'Текст'
                             }
                         </p>
+                        <p className={'whitespace-nowrap max-w-36 overflow-hidden'}>Тип: {conversation.type}</p>
                     </div>
                 </div>
             </div>
