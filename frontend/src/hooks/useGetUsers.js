@@ -1,17 +1,8 @@
-import toast from "react-hot-toast";
 import {useEffect} from "react";
 import useConversation from "../store/useConversation.js";
+import {getUser} from "../API/API.js";
 
-const getUser = async (userId) => {
-    try {
-        const res = await fetch(`/api/users/${userId}`)
-        return res.json();
 
-    } catch (e) {
-        console.log(e.message);
-        return null;
-    }
-}
 
 const getUsers = async (state, array) => {
     for (const id of array) {

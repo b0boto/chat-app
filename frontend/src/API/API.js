@@ -46,6 +46,17 @@ export const deleteUserFromConversationAPI = async (userId, conversationId) => {
 }
 
 
+export const getUser = async (userId) => {
+    try {
+        const res = await fetch(`/api/users/${userId}`)
+        return res.json();
+
+    } catch (e) {
+        console.log(e.message);
+        return null;
+    }
+}
+
 export const getUsersAPI = async () => {
     try {
         const res = await fetch(`/api/users`)

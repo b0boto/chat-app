@@ -1,6 +1,4 @@
-import toast from "react-hot-toast";
 import {getConversationsAPI} from "../API/API.js";
-import useGetConversations from "./useGetConversations.js";
 import {useCallback, useEffect, useState} from "react";
 import useConversation from "../store/useConversation.js";
 import useGetConversationUsers from "./useGetConversationUsers.js";
@@ -9,7 +7,7 @@ let key = 1;
 const useConversationKeeper = () => {
     const {setConversations, conversations, selectedConversation, setSelectedConversation} = useConversation();
     const [loading, setLoading] = useState(false);
-
+    const {getParticipants} = useGetConversationUsers();
 
     const changeLoading = useCallback(() => {
         if(!loading) setLoading(true);
@@ -36,7 +34,8 @@ const useConversationKeeper = () => {
 
     useEffect(() => {
         getConversations();
-
+        if(selectedConversation)
+            getParticipants(selectedConversation._id);
     }, [loading]);
 }
 
