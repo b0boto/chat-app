@@ -25,4 +25,18 @@ export const getOneUser = async (req, res) => {
     }
 }
 
+export const searchUsers = async (req, res) => {
+    const {username: username} = req.params;
+    const loggedInUser = req.user.username;
+
+    try {
+        const users = await User.find({username: {$regex: `^${username}`, $ne: loggedInUser }})
+
+        res.status(200).json(users);
+    } catch (e) {
+        console.log('error in searchUsers ', e)
+        res.status(500).json({error: 'Internal server error'})
+    }
+}
+
 

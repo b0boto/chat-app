@@ -35,7 +35,13 @@ const UserProfileModal = ({children, isAdmin, visible, setVisible, userId}) => {
                 </div>
 
                 <div className={'flex items-center justify-center mt-4 gap-4'}>
-                    {isAdmin ? (<button className={'btn btn-outline btn-error text-white cursor-pointer'} onClick={handleSubmit}>{authUser._id === selectedUser?._id ? 'Выйти' : 'Удалить'}</button>) : ''}
+                    {isAdmin || selectedUser?._id === authUser._id ? (
+                        <button
+                            className={'btn btn-outline btn-error text-white cursor-pointer'}
+                            onClick={handleSubmit}
+                        >
+                            {authUser._id === selectedUser?._id ? 'Выйти' : 'Удалить'}
+                        </button>) : ''}
 
                     <button className={'btn text-white cursor-pointer'} onClick={() => setVisible(false)}>Закрыть</button>
                 </div>

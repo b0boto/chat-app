@@ -1,11 +1,12 @@
 import Conversation from "../models/conversationModel.js";
 import User from "../models/userModel.js";
+import mongoose from "mongoose";
+import UserModel from "../models/userModel.js";
 
 export const createConversation = async (req, res) => {
     try {
         const createrId = req.user._id;
-        const { conversationName: conversationName, type: conversationType } = req.body;
-        console.log(conversationType)
+        const { conversationName: conversationName, type: conversationType, receiverId: receiverId} = req.body;
 
         let conversation;
         if(conversationName !== '') {
@@ -17,8 +18,12 @@ export const createConversation = async (req, res) => {
                 img: `https://avatar.iran.liara.run/username?username=${conversationName}+`
             })
         } else {
+            conversation = await Conversation.find({participants: {$all: [createrId, receiverId]}, type: 'CHAT'})
+            if(conversation.length > 0)
+                return res.status(500).json({error: 'Данный пользователь уже добавлен'})
+
             conversation = await Conversation.create({
-                participants: [createrId],
+                participants: [createrId, receiverId],
                 type: conversationType,
             })
         }
@@ -101,9 +106,12 @@ export const getConversationParticipants = async (req, res) => {
 
 export const deleteConversation = async (req, res) => {
     try {
+        const {conversationId} = req.body;
+        const result = await Conversation.findOneAndDelete({_id: conversationId})
 
+        res.status(200).json(result);
     } catch (e) {
         res.status(500).json({error: 'error in deleteConverstaion'})
-        console.log('Ошибка в conversationController');
+        console.log('Ошибка в deleteConverstaion ', e);
     }
 }

@@ -18,7 +18,7 @@ const useConversationKeeper = () => {
         setConversations(data || []);
         let bool = false;
         conversations.forEach((conversation) => {
-            if(conversation._id === selectedConversation._id) {
+            if(conversation._id === selectedConversation?._id) {
                 bool = true;
             }
         })

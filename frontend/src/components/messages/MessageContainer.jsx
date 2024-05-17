@@ -8,15 +8,37 @@ import {useAuthContext} from "../../context/AuthContext.jsx";
 import AddUserModal from "../Modals/AddUserModal.jsx";
 import UserList from "../Chat/UserList.jsx";
 import useGetConversationUsers from "../../hooks/useGetConversationUsers.js";
+import {getUser} from "../../API/API.js";
+import conversation from "../sidebar/Conversation.jsx";
 
 
 const MessageContainer = () => {
     const {selectedConversation, setSelectedConversation} = useConversation();
     useGetConversationUsers();
+    const {authUser} = useAuthContext();
+    const [chat, setChat] = useState({});
+    const [isChat, setIsChat] = useState(false);
+
+    const getUserChat = async () => {
+        const userId = selectedConversation.participants.filter((id) => id !== authUser._id);
+        setChat(await getUser(userId));
+    }
+
+    useEffect(() => {
+        if(selectedConversation?.type === 'CHAT') {
+            getUserChat();
+            setIsChat(true);
+        }
+        else {
+            setChat({});
+            setIsChat(false);
+        }
+    }, [selectedConversation]);
 
     useEffect(() => {
         return () => setSelectedConversation(null)
     }, [setSelectedConversation]);
+
 
     return (
         <div className={'md:min-w-[550px] sm:min-w-[350px] flex flex-col'}>
@@ -24,11 +46,16 @@ const MessageContainer = () => {
                 ?
                 <div className={'flex flex-col h-full'}>
                     <div className={'bg-slate-500 px-4 py-2 mb-2 flex justify-between items-center'}>
-                        <div>
-                            <span className={'label-text'}>To: </span>
-                            <span className={'label-text font-bold'}>{selectedConversation.conversationName}</span>
+                        <div className={'flex items-center gap-2'}>
+                            <img className={'rounded-full w-14'} src={isChat ? chat.profilePicture : selectedConversation.img} alt=""/>
+                            <div>
+                                <span className={'label-text'}>To: </span>
+                                <span
+                                    className={'label-text font-bold'}>{isChat ? chat.username : selectedConversation.conversationName}</span>
+                            </div>
+
                         </div>
-                        { selectedConversation.type !== 'CHAT' &&
+                        {selectedConversation.type !== 'CHAT' &&
                             (
                                 <div className="dropdown dropdown-end">
                                     <div tabIndex={0} role="button" className="btn m-1">Участники</div>

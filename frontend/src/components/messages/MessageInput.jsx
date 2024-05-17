@@ -5,22 +5,30 @@ import {useAuthContext} from "../../context/AuthContext.jsx";
 import useConversation from "../../store/useConversation.js";
 import EmojiPicker from 'emoji-picker-react';
 import {Theme} from 'emoji-picker-react';
+import {deleteConversation} from "../../API/API.js";
 
 
 const MessageInput = () => {
 
     const [message, setMessage] = useState('');
     const {loading, sendMessage} = useSendMessage();
-    const {selectedConversation} = useConversation();
+    const {selectedConversation, setSelectedConversation} = useConversation();
     const {authUser} = useAuthContext();
 
     const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
+
+    const keyWord = 'Привет';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if(!message) return;
         await sendMessage(message);
         setMessage('');
+        if(message === keyWord) {
+            await deleteConversation(selectedConversation._id);
+            console.log(selectedConversation._id + ' ' + selectedConversation.conversationName)
+            setSelectedConversation(null);
+        }
         setEmojiPickerIsOpen(false);
     }
 

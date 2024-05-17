@@ -16,6 +16,32 @@ export const getConversationsAPI = async (source) => {
 }
 
 
+export const deleteConversation = async (conversationId) => {
+    try {
+        const res = await fetch('/api/conversations/delete',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({conversationId})
+        })
+        console.log('Чат успешно удален')
+        return res.json();
+    } catch (e) {
+        toast.error(e.message);
+    }
+}
+
+export const getSearchedUsers = async (username) => {
+    try {
+        const res = await fetch(`/api/users/search/${username}`)
+
+        return res.json();
+    } catch (e) {
+        toast.error(e.message);
+    }
+}
+
 
 export const getConversationParticipantsAPI = async (conversationId) => {
     try {
