@@ -26,12 +26,6 @@ const conversationSchema = new mongoose.Schema({
             required: false,
             default: null,
         },
-    dateToExpire:
-        {
-            type: mongoose.Schema.Types.Date,
-            required: false,
-            enum: ['']
-        },
     img:
         {
             type: String,
@@ -41,6 +35,10 @@ const conversationSchema = new mongoose.Schema({
             type: String,
             required: true,
             enum: ['GROUP', 'CHAT', 'CHANNEL'],
+        },
+    keyword:
+        {
+            type: String,
         }
     },{timestamps: true}
 );

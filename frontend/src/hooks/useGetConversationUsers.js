@@ -11,14 +11,14 @@ const useGetConversationUsers = () => {
         const newMap = new Map(users);
         const newMap2 = new Map();
 
-        for(let id of data) {
-            if(newMap.get(id) === undefined) {
-                newMap2.set(id, await getUser(id));
-            } else {
-                newMap2.set(id, newMap.get(id));
+        if(data)
+            for(let id of data) {
+                if(newMap.get(id) === undefined) {
+                    newMap2.set(id, await getUser(id));
+                } else {
+                    newMap2.set(id, newMap.get(id));
+                }
             }
-
-        }
         setParticipants(Array.from(newMap2).map(([key, value]) => ({key, value})) || []);
     }
 

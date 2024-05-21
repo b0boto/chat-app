@@ -6,7 +6,7 @@ import useGetConversations from "./useGetConversations.js";
 const useCreateConversation = () => {
     const [loading, setLoading] = useState(false);
 
-    const createConversation = async (conversationName, type, receiverId = null) => {
+    const createConversation = async (conversationName, type, receiverId = null, keyword = null) => {
         setLoading(true);
         try {
             const res = await fetch(`/api/conversations/create`, {
@@ -14,7 +14,7 @@ const useCreateConversation = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({conversationName: conversationName, type: type, receiverId: receiverId})
+                body: JSON.stringify({conversationName: conversationName, type: type, receiverId: receiverId, keyword: keyword})
             })
 
             const data = await res.json();

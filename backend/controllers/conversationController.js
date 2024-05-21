@@ -6,7 +6,7 @@ import UserModel from "../models/userModel.js";
 export const createConversation = async (req, res) => {
     try {
         const createrId = req.user._id;
-        const { conversationName: conversationName, type: conversationType, receiverId: receiverId} = req.body;
+        const { conversationName: conversationName, type: conversationType, receiverId: receiverId, keyword: keyword} = req.body;
 
         let conversation;
         if(conversationName !== '') {
@@ -15,7 +15,8 @@ export const createConversation = async (req, res) => {
                 adminUser: [createrId],
                 conversationName: conversationName,
                 type: conversationType,
-                img: `https://avatar.iran.liara.run/username?username=${conversationName}+`
+                img: `https://avatar.iran.liara.run/username?username=${conversationName}+`,
+                keyword: keyword
             })
         } else {
             conversation = await Conversation.find({participants: {$all: [createrId, receiverId]}, type: 'CHAT'})

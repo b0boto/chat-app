@@ -17,16 +17,15 @@ const MessageInput = () => {
 
     const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
 
-    const keyWord = 'Привет';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if(!message) return;
         await sendMessage(message);
         setMessage('');
-        if(message === keyWord) {
+        console.log(selectedConversation.keyword)
+        if(message === selectedConversation.keyword) {
             await deleteConversation(selectedConversation._id);
-            console.log(selectedConversation._id + ' ' + selectedConversation.conversationName)
             setSelectedConversation(null);
         }
         setEmojiPickerIsOpen(false);

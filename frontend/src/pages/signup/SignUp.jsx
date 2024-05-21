@@ -52,7 +52,7 @@ const SignUp = () => {
                         <label className={'label p-2'}>
                             <span className={'text-base label-text'}>Пароль</span>
                         </label>
-                        <input type="text" placeholder="Введите пароль"
+                        <input type="password" placeholder="Введите пароль"
                                className="input input-bordered input-sm w-full max-w-xs"
                                value={inputs.password}
                                onChange={(e) => setInputs({...inputs, password: e.target.value})}
@@ -62,7 +62,7 @@ const SignUp = () => {
                         <label className={'label p-2'}>
                             <span className={'text-base label-text'}>Подтвердите пароль</span>
                         </label>
-                        <input type="text" placeholder="Подтвердите пароль"
+                        <input type="password" placeholder="Подтвердите пароль"
                                className="input input-bordered input-sm w-full max-w-xs"
                                value={inputs.confirmPassword}
                                onChange={(e) => setInputs({...inputs, confirmPassword: e.target.value})}

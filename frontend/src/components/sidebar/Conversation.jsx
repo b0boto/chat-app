@@ -2,15 +2,18 @@ import React, {useEffect, useState} from 'react';
 import useConversation from "../../store/useConversation.js";
 import {useAuthContext} from "../../context/AuthContext.jsx";
 import {getUser} from "../../API/API.js";
+import {useSocketContext} from "../../context/SocketContext.jsx";
 
 const Conversation = ({conversation}) => {
     const {selectedConversation, setSelectedConversation} = useConversation();
     const isSelected = selectedConversation?._id === conversation._id;
-    // const {onlineUsers} = useSocketContext();
-    // const isOnline = onlineUsers.includes(conversation._id);
-
     const {authUser} = useAuthContext();
     const [chat, setChat] = useState({});
+
+    const {onlineUsers} = useSocketContext();
+    const isOnline = onlineUsers.includes(chat._id);
+
+
 
     const getUserChat = async () => {
         const userId = conversation.participants.filter((id) => id !== authUser._id);
@@ -30,7 +33,7 @@ const Conversation = ({conversation}) => {
                          setSelectedConversation(conversation);
                      }}
                 >
-                    <div className={`avatar`}>
+                    <div className={`avatar ${isOnline ? 'online' : 'offline'}`}>
                         <div className="w-14 rounded-full">
                             <img src={chat.profilePicture}/>
                         </div>
