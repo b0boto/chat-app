@@ -3,14 +3,12 @@ import Messages from "./Messages.jsx";
 import MessageInput from "./MessageInput.jsx";
 import { BiSolidMessage } from "react-icons/bi";
 import useConversation from "../../store/useConversation.js";
-import UserProfileModal from "../Modals/UserProfileModal.jsx";
 import {useAuthContext} from "../../context/AuthContext.jsx";
-import AddUserModal from "../Modals/AddUserModal.jsx";
 import UserList from "../Chat/UserList.jsx";
 import useGetConversationUsers from "../../hooks/useGetConversationUsers.js";
 import {getUser} from "../../API/API.js";
-import conversation from "../sidebar/Conversation.jsx";
-
+import io from 'socket.io-client';
+import {useSocketContext} from "../../context/SocketContext.jsx";
 
 const MessageContainer = () => {
     const {selectedConversation, setSelectedConversation} = useConversation();
@@ -18,6 +16,8 @@ const MessageContainer = () => {
     const {authUser} = useAuthContext();
     const [chat, setChat] = useState({});
     const [isChat, setIsChat] = useState(false);
+
+
 
     const getUserChat = async () => {
         const userId = selectedConversation.participants.filter((id) => id !== authUser._id);
@@ -34,6 +34,8 @@ const MessageContainer = () => {
             setIsChat(false);
         }
     }, [selectedConversation]);
+
+
 
     useEffect(() => {
         return () => setSelectedConversation(null)

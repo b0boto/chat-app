@@ -13,12 +13,35 @@ const Conversation = ({conversation}) => {
     const {onlineUsers} = useSocketContext();
     const isOnline = onlineUsers.includes(chat._id);
 
+    const [rooms, setRooms] = useState([]);
+    const {socket} = useSocketContext();
 
+
+    useEffect(() => {
+        socket.on('roomUpdated', (updatedRooms) => {
+            setRooms(updatedRooms);
+        });
+
+        return () => {
+            socket.off('roomUpdated');
+        };
+    }, [])
 
     const getUserChat = async () => {
         const userId = conversation.participants.filter((id) => id !== authUser._id);
         setChat(await getUser(userId));
     }
+
+    const handleJoinRoom = (roomId) => {
+        // Отправка события выбора комнаты на сервер
+        socket.emit('joinRoom', roomId);
+        console.log(rooms)
+    };
+
+    const handleLeaveRoom = (roomId) => {
+        // Отправка события отключения от комнаты на сервер
+        socket.emit('leaveRoom', roomId);
+    };
 
     useEffect(() => {
         getUserChat();
@@ -30,7 +53,10 @@ const Conversation = ({conversation}) => {
                 <div className={`flex gap-2 items-center hover:bg-gray-700 rounded p-2 py-1 cursor-pointer
                  ${isSelected ? 'bg-gray-600' : ''}`}
                      onClick={() => {
+                         if(selectedConversation)
+                             handleLeaveRoom(selectedConversation._id)
                          setSelectedConversation(conversation);
+                         handleJoinRoom(conversation._id)
                      }}
                 >
                     <div className={`avatar ${isOnline ? 'online' : 'offline'}`}>
@@ -59,7 +85,10 @@ const Conversation = ({conversation}) => {
             <div className={`flex gap-2 items-center hover:bg-gray-700 rounded p-2 py-1 cursor-pointer
                  ${isSelected ? 'bg-gray-600' : ''}`}
                  onClick={() => {
+                     if(selectedConversation)
+                         handleLeaveRoom(selectedConversation._id)
                      setSelectedConversation(conversation);
+                     handleJoinRoom(conversation._id);
                  }}
             >
                 <div className={`avatar`}>

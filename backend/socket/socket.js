@@ -12,19 +12,40 @@ const io = new Server(server, {
 });
 
 export const getReceiverSocketId = (receiverId) => {
-    console.log(userSocketMap);
-    console.log(receiverId);
 
-    return userSocketMap[receiverId];
+    return rooms[receiverId].roomId;
 };
 
 const userSocketMap = {};
+const rooms = {};
 
 io.on('connection', (socket) => {
-    console.log('user connected', socket.id)
+    console.log('user connected', socket.id);
 
     const userId = socket.handshake.query.userId;
     if(userId !== 'undefined') userSocketMap[userId] = socket.id;
+
+    socket.on('joinRoom', (roomId) => {
+        socket.join(roomId);
+
+        rooms[roomId] = rooms[roomId] || {roomId: roomId, users: []};
+        rooms[roomId].users.push(socket.id)
+
+        console.log('connected to room ', roomId)
+        console.log('rooms: ', rooms)
+        io.to(roomId).emit('roomUpdated', rooms[roomId])
+    })
+
+
+    socket.on('leaveRoom', (roomId) => {
+        socket.leave(roomId);
+        console.log('leave from room ', roomId)
+
+
+
+        rooms[roomId].users = rooms[roomId].users.filter((userId) => userId !== socket.id);
+        io.to(roomId).emit('roomUpdated', rooms[roomId]);
+    });
 
     io.emit('getOnlineUsers', Object.keys(userSocketMap));
 

@@ -13,10 +13,12 @@ export const SocketContextProvider = ({ children }) => {
     const [onlineUsers, setOnlineUsers] = useState([]);
     const {authUser} = useAuthContext();
 
+
+    // http://localhost:5000
     useEffect(() => {
         if(authUser) {
             console.log('socket connected')
-            const socket = io('http://localhost:5000', {
+            const socket = io('https://chat-app-4g6v.onrender.com', {
                 query: {
                     userId: authUser._id
                 }
@@ -25,6 +27,7 @@ export const SocketContextProvider = ({ children }) => {
             setSocket(socket);
             socket.on('getOnlineUsers', (users) => {
                 setOnlineUsers(users);
+
             })
 
             return () => socket.close();

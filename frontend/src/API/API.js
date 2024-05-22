@@ -11,7 +11,8 @@ export const getConversationsAPI = async (source) => {
 
         return data;
     } catch (e) {
-        toast.error(e.message);
+        console.log(e.message);
+
     }
 }
 
@@ -28,7 +29,8 @@ export const deleteConversation = async (conversationId) => {
         console.log('Чат успешно удален')
         return res.json();
     } catch (e) {
-        toast.error(e.message);
+        console.log(e.message);
+
     }
 }
 
@@ -38,7 +40,8 @@ export const getSearchedUsers = async (username) => {
 
         return res.json();
     } catch (e) {
-        toast.error(e.message);
+        console.log(e.message);
+
     }
 }
 
@@ -52,7 +55,7 @@ export const getConversationParticipantsAPI = async (conversationId) => {
         }
         return data;
     } catch (e) {
-        toast.error(e.message);
+        console.log(e.message);
     }
 }
 
