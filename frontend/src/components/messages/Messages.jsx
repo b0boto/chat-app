@@ -19,7 +19,7 @@ const Messages = () => {
         setTimeout(() => {
             const block = lastMessageRef.current;
             console.dir(block)
-            console.log(block.offsetTop)
+            console.log(block?.offsetTop)
             if(block)
                 block.parentElement.scrollTop = block.offsetTop;
 
@@ -27,8 +27,9 @@ const Messages = () => {
             //     block.parentElement.scrollBy({top: block.offsetTop})
 
 
-            console.log('messages ' + messages)
         }, 100)
+        console.log('messages ', messages)
+
     }, [messages]);
 
     return (
