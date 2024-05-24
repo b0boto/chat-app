@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import {useCallback, useEffect} from "react";
 import { useSocketContext } from "../context/SocketContext";
 import useConversation from "../store/useConversation";
 
@@ -7,12 +7,16 @@ const useListenMessages = () => {
     const { socket } = useSocketContext();
     const { messages, setMessages } = useConversation();
 
+    const addMessage = useCallback((newMessage) => {
+        setMessages([...messages, newMessage]);
+    },[messages]);
+
+
+
     useEffect(() => {
-        socket?.on("newMessage", (newMessage) => {
-            setMessages([...messages, newMessage]);
-        });
+        socket?.on("newMessage", addMessage);
 
         return () => socket?.off("newMessage");
-    }, [socket, setMessages, messages]);
+    }, [socket]);
 };
 export default useListenMessages;
