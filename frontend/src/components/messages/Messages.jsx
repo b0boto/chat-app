@@ -26,6 +26,8 @@ const Messages = () => {
             // if(block)
             //     block.parentElement.scrollBy({top: block.offsetTop})
 
+
+            console.log('messages ' + messages)
         }, 100)
     }, [messages]);
 
