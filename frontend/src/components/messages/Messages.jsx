@@ -7,7 +7,6 @@ import useGetUsers from "../../hooks/useGetUsers.js";
 const Messages = () => {
     const {messages, loading} = useGetMessages();
     useGetUsers();
-    useListenMessages();
     const lastMessageRef = useRef(null);
 
     useEffect(() => {

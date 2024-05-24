@@ -9,10 +9,13 @@ import useGetConversationUsers from "../../hooks/useGetConversationUsers.js";
 import {getUser} from "../../API/API.js";
 import io from 'socket.io-client';
 import {useSocketContext} from "../../context/SocketContext.jsx";
+import useListenMessages from "../../hooks/useListenMessages.js";
 
 const MessageContainer = () => {
     const {selectedConversation, setSelectedConversation} = useConversation();
     useGetConversationUsers();
+    useListenMessages();
+    
     const {authUser} = useAuthContext();
     const [chat, setChat] = useState({});
     const [isChat, setIsChat] = useState(false);
