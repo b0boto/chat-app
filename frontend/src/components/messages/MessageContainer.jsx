@@ -15,11 +15,10 @@ const MessageContainer = () => {
     const {selectedConversation, setSelectedConversation} = useConversation();
     useGetConversationUsers();
     useListenMessages();
-    
+
     const {authUser} = useAuthContext();
     const [chat, setChat] = useState({});
     const [isChat, setIsChat] = useState(false);
-
 
 
     const getUserChat = async () => {

@@ -21,12 +21,8 @@ const SearchInput = () => {
         else {
             setUsers([]);
             setSearchVisible(false);
-
         }
-
     }
-
-
 
     return (
         <form className={'flex'}>

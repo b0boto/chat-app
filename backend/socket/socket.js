@@ -31,24 +31,17 @@ io.on('connection', (socket) => {
         rooms[roomId] = rooms[roomId] || {roomId: roomId, users: []};
         rooms[roomId].users.push(socket.id)
 
-        console.log('connected to room ', roomId)
-        console.log('rooms: ', rooms)
         io.to(roomId).emit('roomUpdated', rooms[roomId])
     })
 
-
     socket.on('leaveRoom', (roomId) => {
         socket.leave(roomId);
-        console.log('leave from room ', roomId)
-
-
 
         rooms[roomId].users = rooms[roomId].users.filter((userId) => userId !== socket.id);
         io.to(roomId).emit('roomUpdated', rooms[roomId]);
     });
 
     io.emit('getOnlineUsers', Object.keys(userSocketMap));
-
 
     socket.on('disconnect', () => {
         console.log('user disconnected', socket.id);

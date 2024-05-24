@@ -12,8 +12,10 @@ const User = ({user}) => {
         e.preventDefault();
         const result = await createConversation('', 'CHAT', user._id);
         console.log(result)
-        if(result)
+        if(result) {
             toast.success(`Пользователь ${user.username} добавлен`)
+
+        }
     }
 
 

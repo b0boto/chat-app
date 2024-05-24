@@ -16,7 +16,7 @@ const CreateGroupModal = () => {
             toast.error('Введите название группы');
             return;
         }
-        if(checked && keyword === '' || keyword.length < 5) {
+        if(checked && keyword === '' || checked && keyword.length < 5) {
             toast.error('Введите кодовое слово (не менее 5 букв)');
             return;
         }

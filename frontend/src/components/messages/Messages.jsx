@@ -10,25 +10,11 @@ const Messages = () => {
     const lastMessageRef = useRef(null);
 
     useEffect(() => {
-        console.log('mount')
-        return () => console.log('unmount')
-    }, []);
-
-    useEffect(() => {
         setTimeout(() => {
             const block = lastMessageRef.current;
-            console.dir(block)
-            console.log(block?.offsetTop)
             if(block)
                 block.parentElement.scrollTop = block.offsetTop;
-
-            // if(block)
-            //     block.parentElement.scrollBy({top: block.offsetTop})
-
-
         }, 100)
-        console.log('messages ', messages)
-
     }, [messages]);
 
     return (

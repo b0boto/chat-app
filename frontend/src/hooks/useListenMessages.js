@@ -8,7 +8,6 @@ const useListenMessages = () => {
     const { messages, setMessages } = useConversation();
 
     const addMessage = useCallback((newMessage) => {
-        console.log('setMessages 1')
         setMessages([...messages, newMessage]);
     },[messages]);
 
