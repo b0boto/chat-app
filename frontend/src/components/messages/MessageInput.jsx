@@ -21,14 +21,16 @@ const MessageInput = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if(!message) return;
-        await sendMessage(message);
-        setMessage('');
-        console.log(selectedConversation.keyword)
-        if(message === selectedConversation.keyword) {
-            await deleteConversation(selectedConversation._id);
-            setSelectedConversation(null);
+        if(!loading) {
+            await sendMessage(message);
+            setMessage('');
+            console.log(selectedConversation.keyword)
+            if(message === selectedConversation.keyword) {
+                await deleteConversation(selectedConversation._id);
+                setSelectedConversation(null);
+            }
+            setEmojiPickerIsOpen(false);
         }
-        setEmojiPickerIsOpen(false);
     }
 
     if(authUser._id !== selectedConversation.adminUser && selectedConversation.type === 'CHANNEL' ) {

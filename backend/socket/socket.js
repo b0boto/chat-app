@@ -12,7 +12,6 @@ const io = new Server(server, {
 });
 
 export const getReceiverSocketId = (receiverId) => {
-
     return rooms[receiverId].roomId;
 };
 
